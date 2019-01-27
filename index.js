@@ -10,8 +10,7 @@ var express = require('express'),
 
 program.version('1.0.0')
     .usage('[options]')
-    .option('-p, --port <n>', 'server port', 80)
-    .option('-c, --cors <origin>', 'enable cors header with given origin rule', false)
+    .option('-c, --cors <origin>', 'enable cors header with given origin rule', process.env.CORS)
     .parse(process.argv);
 
 var app = express();
@@ -50,7 +49,7 @@ app.all('*', function (req, res) {
     }
 });
 
-const server = app.listen(program.port);
+const server = app.listen(80);
 
 var signals = {
   'SIGHUP': 1,
@@ -72,4 +71,6 @@ Object.keys(signals).forEach((signal) => {
   });
 });
 
-console.log('POST mjml as text/plain raw body to http://' + os.hostname() + ':' + program.port + '. Result will be returned as text/plain.');
+console.log('self: ' + os.hostname() + ':' + program.port)
+console.log('cors: ' + program.cors)
+console.log('POST mjml as text/plain raw body, result will be returned as text/plain.');
