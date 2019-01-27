@@ -8,25 +8,28 @@ var express = require('express'),
     mjml2html = require('mjml'),
     program = require('commander');
 
-program.version('1.0.0')
+program
     .usage('[options]')
-    .option('-c, --cors <origin>', 'enable cors header with given origin rule', process.env.CORS)
     .parse(process.argv);
 
 var app = express();
 
-var opts = {
+app.use(bodyParser.text({
     inflate: true,
     limit: '2048kb',
     type: '*/*'
-};
+}));
 
-app.use(bodyParser.text(opts));
+var opts = {
+    keepComments: (process.env.MJML_KEEP_COMMENTS === 'true'),
+    minify: (process.env.MJML_MINIFY === 'true'),
+    validationLevel: (['soft', 'strict', 'skip'].includes(process.env.MJML_VALIDATION_LEVEL) ? process.env.MJML_VALIDATION_LEVEL : 'soft')
+};
 
 app.all('*', function (req, res) {
     // enable cors
-    if (program.cors) {
-        res.header("Access-Control-Allow-Origin", program.cors);
+    if (process.env.CORS) {
+        res.header("Access-Control-Allow-Origin", process.env.CORS);
         res.header("Access-Control-Allow-Headers", "*");
         res.header("Access-Control-Allow-Methods", "POST");
         res.header("Access-Control-Max-Age", "-1");
@@ -37,15 +40,19 @@ app.all('*', function (req, res) {
         res.status(500).send('Content-Type must be set, use text/plain if unsure');
         return;
     }
-    
+
     try {
-        var result = mjml2html(req.body || '');
+        var result = mjml2html(req.body || '', opts);
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.end(result.html);
     } catch (ex) {
+        // print error details
+        console.log(req.body || '')
         console.error(ex);
+        console.log('')
+
         res.writeHead(400, {'Content-Type': 'text/plain'});
-        res.end(ex);
+        res.end();
     }
 });
 
@@ -71,6 +78,10 @@ Object.keys(signals).forEach((signal) => {
   });
 });
 
-console.log('self: ' + os.hostname() + ':' + program.port)
-console.log('cors: ' + program.cors)
-console.log('POST mjml as text/plain raw body, result will be returned as text/plain.');
+console.log('self: ' + os.hostname() + ':80');
+console.log('cors: ' + process.env.CORS);
+console.log('mjml keep comments: ' + opts.keepComments);
+console.log('mjml validation level: ' + opts.validationLevel);
+console.log('mjml minify: ' + opts.minify);
+console.log('');
+console.log('POST mjml as text/plain raw body, result will be returned as text/html.');

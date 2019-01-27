@@ -1,5 +1,13 @@
 FROM node:alpine
 
+ENV NODE_ENV=production
+
+ENV CORS=""
+
+ENV MJML_KEEP_COMMENTS=false
+ENV MJML_VALIDATION_LEVEL=soft
+ENV MJML_MINIFY=true
+
 COPY package* ./
 
 RUN set -ex \
@@ -10,8 +18,6 @@ RUN set -ex \
 COPY index.js ./index.js
 
 COPY healthcheck.sh /healthcheck.sh
-
-ENV CORS=""
 
 HEALTHCHECK --timeout=2s \
   CMD /healthcheck.sh || exit 1
