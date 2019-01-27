@@ -10,10 +10,10 @@ Due to various challenges this image sports the following features:
 - Supports healthchecks.
 
 # Table of contents
-- [MJML docker microservice / server](#mjml-docker-microservice--server)
-- [Table of contents](#table-of-contents)
-  - [Overview](#overview)
-  - [Troubleshooting](#troubleshooting)
+- [Overview](#overview)
+- [Defaults](#defaults)
+- [Development](#development)
+- [Troubleshooting](#troubleshooting)
 
 ## Overview
 
@@ -24,7 +24,7 @@ Due to GDPR / DSGVO reasons I required the mjml instance to be under my own cont
 Starting the image is as easy as running a test instance through docker
 
 ```sh
-docker run -it --rm -p 8889:80 mjml-server # --cors "*"
+docker run -it --rm -p 8889:80 mjml-server
 ```
 
 or `docker-compose` with the following example:
@@ -37,9 +37,37 @@ services:
     image: adrianrudnik/mjml-server
     ports:
       - 8889:80
+    # for development, uncomment the following lines:
     # environment:
     #   CORS: *
+    #   MJML_KEEP_COMMENTS=true
+    #   MJML_VALIDATION_LEVEL=strict
+    #   MJML_MINIFY=false
 ```
+
+## Defaults
+
+The production defaults, without any override, default to:
+
+```sh
+CORS ""
+MJML_KEEP_COMMENTS "false"
+MJML_VALIDATION_LEVEL "soft"
+MJML_MINIFY "true"
+```
+
+## Development
+
+For development environments I would suggest to switch it to
+
+```sh
+CORS "*"
+MJML_KEEP_COMMENTS "true"
+MJML_VALIDATION_LEVEL "strict"
+MJML_MINIFY "false"
+```
+
+This will escalate any issues you have with invalid mjml code to the docker log (`stdout` or `docker-compose logs`).
 
 ## Troubleshooting
 
