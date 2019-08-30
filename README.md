@@ -39,10 +39,10 @@ services:
       - 8889:80
     # for development, uncomment the following lines:
     # environment:
-    #   CORS: *
-    #   MJML_KEEP_COMMENTS=true
-    #   MJML_VALIDATION_LEVEL=strict
-    #   MJML_MINIFY=false
+    #   - CORS=*
+    #   - MJML_KEEP_COMMENTS=true
+    #   - MJML_VALIDATION_LEVEL=strict
+    #   - MJML_MINIFY=false
 ```
 
 ## Defaults
