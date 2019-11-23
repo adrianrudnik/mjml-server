@@ -19,7 +19,7 @@ COPY index.js ./index.js
 
 COPY healthcheck.sh /healthcheck.sh
 
-HEALTHCHECK --timeout=2s \
+HEALTHCHECK --timeout=30s \
   CMD /healthcheck.sh || exit 1
 
 EXPOSE 80
