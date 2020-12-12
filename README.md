@@ -37,8 +37,10 @@ services:
     image: adrianrudnik/mjml-server
     ports:
       - 8889:80
-    # for development, uncomment the following lines:
     # environment:
+    # to change the port:
+    #   - PORT=8080
+    # for development, uncomment the following lines:
     #   - CORS=*
     #   - MJML_KEEP_COMMENTS=true
     #   - MJML_VALIDATION_LEVEL=strict
