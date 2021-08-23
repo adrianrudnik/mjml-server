@@ -10,8 +10,6 @@ Due to various challenges this image sports the following features:
 - Supports healthchecks.
 
 # Table of contents
-- [MJML docker microservice / server](#mjml-docker-microservice--server)
-- [Table of contents](#table-of-contents)
   - [Overview](#overview)
   - [Defaults](#defaults)
   - [Development](#development)
