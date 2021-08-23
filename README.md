@@ -10,10 +10,10 @@ Due to various challenges this image sports the following features:
 - Supports healthchecks.
 
 # Table of contents
-- [Overview](#overview)
-- [Defaults](#defaults)
-- [Development](#development)
-- [Troubleshooting](#troubleshooting)
+  - [Overview](#overview)
+  - [Defaults](#defaults)
+  - [Development](#development)
+  - [Troubleshooting](#troubleshooting)
 
 ## Overview
 
@@ -45,6 +45,7 @@ services:
     #   - MJML_KEEP_COMMENTS=true
     #   - MJML_VALIDATION_LEVEL=strict
     #   - MJML_MINIFY=false
+    #   - MJML_BEAUTIFY=true
 ```
 
 ## Defaults
@@ -56,6 +57,7 @@ CORS ""
 MJML_KEEP_COMMENTS "false"
 MJML_VALIDATION_LEVEL "soft"
 MJML_MINIFY "true"
+MJML_BEAUTIFY "false"
 ```
 
 ## Development
@@ -67,6 +69,7 @@ CORS "*"
 MJML_KEEP_COMMENTS "true"
 MJML_VALIDATION_LEVEL "strict"
 MJML_MINIFY "false"
+MJML_BEAUTIFY "true"
 ```
 
 This will escalate any issues you have with invalid mjml code to the docker log (`stdout` or `docker-compose logs`).

@@ -21,6 +21,7 @@ app.use(bodyParser.text({
 const opts = {
   keepComments: (process.env.MJML_KEEP_COMMENTS === 'true'),
   minify: (process.env.MJML_MINIFY === 'true'),
+  beautify: (process.env.MJML_BEAUTIFY === 'true'),
   validationLevel: (['soft', 'strict', 'skip'].includes(process.env.MJML_VALIDATION_LEVEL) ? process.env.MJML_VALIDATION_LEVEL : 'soft'),
 }
 
@@ -81,5 +82,6 @@ console.log('cors: ' + (process.env.CORS || 'n/a'))
 console.log('mjml keep comments: ' + opts.keepComments)
 console.log('mjml validation level: ' + opts.validationLevel)
 console.log('mjml minify: ' + opts.minify)
+console.log('mjml beautify: ' + opts.beautify)
 console.log('')
 console.log('POST mjml as text/plain raw body, result will be returned as text/html.')
