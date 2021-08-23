@@ -51,7 +51,7 @@ app.all('*', function (req, res) {
     console.log('')
 
     res.writeHead(400, { 'Content-Type': 'text/plain' })
-    res.end()
+    res.end(ex.message)
   }
 })
 
