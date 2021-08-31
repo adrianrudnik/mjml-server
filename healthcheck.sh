@@ -1,6 +1,10 @@
 #!/bin/sh
 
-HOST=http://localhost:80/
+if [ "$HEALTHCHECK" == "false" ]; then
+ exit 0
+fi
+
+HOST=http://127.0.0.1:${PORT}/
 TOKEN=RmVXY49YwsRfuBBfiYcWOpq6Py57pfa2x
 RESULT=$(curl -s -f -X POST -H "Content-Type: text/plain" --data "<mjml><mj-body><mj-section><mj-column><mj-text>${TOKEN}</mj-text></mj-column></mj-section></mj-body></mjml>" ${HOST})
 

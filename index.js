@@ -23,6 +23,7 @@ const opts = {
   minify: (process.env.MJML_MINIFY === 'true'),
   beautify: (process.env.MJML_BEAUTIFY === 'true'),
   validationLevel: (['soft', 'strict', 'skip'].includes(process.env.MJML_VALIDATION_LEVEL) ? process.env.MJML_VALIDATION_LEVEL : 'soft'),
+  healthchecks: (process.env.HEALTHCHECK === 'true')
 }
 
 app.all('*', function (req, res) {
@@ -79,6 +80,7 @@ Object.keys(signals).forEach((signal) => {
 
 console.log('self: ' + os.hostname() + ':' + server.address().port)
 console.log('cors: ' + (process.env.CORS || 'n/a'))
+console.log('healthchecks: ' + opts.healthchecks)
 console.log('mjml keep comments: ' + opts.keepComments)
 console.log('mjml validation level: ' + opts.validationLevel)
 console.log('mjml minify: ' + opts.minify)
