@@ -13,8 +13,8 @@ Due to various challenges this image sports the following features:
   - [Overview](#overview)
   - [Defaults](#defaults)
   - [Development](#development)
+  - [Kubernetes](#kubernetes)
   - [Troubleshooting](#troubleshooting)
-    - [Kubernetes](#kubernetes)
 
 ## Overview
 
@@ -77,31 +77,18 @@ HEALTHCHECK "false"
 
 This will escalate any issues you have with invalid mjml code to the docker log (`stdout` or `docker-compose logs`).
 
+## Kubernetes
+
+The helm chart will deploy an mjml server accessible from any pods in the cluster.
+
+### Deploy to cluster
+`helm install mjml-server ./helm`
+
+To change the port
+`helm install --set image.port=8080 mjml-server ./helm`
+
 ## Troubleshooting
 
 Make sure you pass along a plain Content-Type header and pass the mjml as raw body.
 
 Catch errors by looking at the HTTP response code.
-
-### Kubernetes
-
-As the default Dockerfile specific `HEALTHCHECK` directive is not supported by kubernetes, you might need to specify your own probes:
-
-```
-spec:
-  containers:
-  - name: ...
-    livenessProbe:
-      exec:
-        command:
-        - curl - -X POST - 'http://localhost:80/'
-      initialDelaySeconds: 30
-      periodSeconds: 30
-    readinessProbe:
-      exec:
-        command:
-        - curl - -X POST - 'http://localhost:80/'
-      initialDelaySeconds: 25
-```
-
-Be aware that this does only check the connectivity and that the port might vary. If you want a functional check as well, you could shift to an approach like the ones used for docker with the result of the [healthcheck.sh](healthcheck.sh). But I'm not a kubernetes user, so feel free to do a pull request if you have a slim approach.

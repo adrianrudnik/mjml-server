@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm.fullname" . }}
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "helm.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "helm.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.image.port }}
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - -X POST
+                - 'http://localhost:{{ .Values.image.port }}/'
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            exec:
+              command:
+                - curl
+                - -X POST
+                - 'http://localhost:{{ .Values.image.port }}/'
+            initialDelaySeconds: 25
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "helm.fullname" . }}
+                  key: port
+            - name: CORS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "helm.fullname" . }}
+                  key: cors
+            - name: MJML_KEEP_COMMENTS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "helm.fullname" . }}
+                  key: mjml-keep-comments
+            - name: MJML_VALIDATION_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "helm.fullname" . }}
+                  key: mjml-validation-level
+            - name: MJML_MINIFY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "helm.fullname" . }}
+                  key: mjml-minify
+            - name: MJML_BEAUTIFY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "helm.fullname" . }}
+                  key: mjml-beautify
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
