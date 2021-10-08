@@ -28,4 +28,5 @@ HEALTHCHECK --start-period=10s --retries=1 CMD /healthcheck.sh || exit 1
 
 EXPOSE 80
 
-ENTRYPOINT [ "node", "--inspect=0.0.0.0:9229", "index.js" ]
+# ENTRYPOINT [ "node", "--inspect=0.0.0.0:9229", "index.js" ]
+ENTRYPOINT [ "node", "index.js" ]
