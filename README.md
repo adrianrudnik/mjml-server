@@ -60,6 +60,8 @@ MJML_VALIDATION_LEVEL "soft"
 MJML_MINIFY "true"
 MJML_BEAUTIFY "false"
 HEALTHCHECK "true"
+CHARSET="utf8"
+DEFAULT_RESPONSE_CONTENT_TYPE="text/html; charset=utf-8"
 ```
 
 ## Development

@@ -10,6 +10,8 @@ ENV MJML_VALIDATION_LEVEL=soft
 ENV MJML_MINIFY=true
 ENV MJML_MINIFY=false
 ENV HEALTHCHECK=true
+ENV CHARSET="utf8"
+ENV DEFAULT_RESPONSE_CONTENT_TYPE="text/html; charset=utf-8"
 
 COPY package* ./
 
@@ -26,4 +28,4 @@ HEALTHCHECK --start-period=10s --retries=1 CMD /healthcheck.sh || exit 1
 
 EXPOSE 80
 
-ENTRYPOINT [ "node", "index.js" ]
+ENTRYPOINT [ "node", "--inspect=0.0.0.0:9229", "index.js" ]
