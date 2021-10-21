@@ -18,7 +18,7 @@ docker-release: ## build latest tag version and publish
 	# read latest version tag from local git for release
 	$(eval TAGV=$(GET_LAST_TAGV))
 	# build and publish multiarch
-	docker buildx build -f Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7,linux/ppc64le -t adrianrudnik/mjml-server:testx -t adrianrudnik/mjml-server:test-${TAGV} --push .
+	docker buildx build -f Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7,linux/ppc64le -t adrianrudnik/mjml-server:latest -t adrianrudnik/mjml-server:${TAGV} --push .
 
 npm-upgrade:
 	npm install -g npm-check-updates
