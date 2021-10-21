@@ -25,7 +25,7 @@ Due to GDPR / DSGVO reasons I required the mjml instance to be under my own cont
 Starting the image is as easy as running a test instance through docker
 
 ```sh
-docker run -it --rm -p 8889:80 mjml-server
+docker run -it --rm -p 8080:80 mjml-server
 ```
 
 or `docker-compose` with the following example:
@@ -107,3 +107,23 @@ spec:
 ```
 
 Be aware that this does only check the connectivity and that the port might vary. If you want a functional check as well, you could shift to an approach like the ones used for docker with the result of the [healthcheck.sh](healthcheck.sh). But I'm not a kubernetes user, so feel free to do a pull request if you have a slim approach.
+
+### Docker
+
+If you want to rely on the Makefile or build for multiple architectures, ensure you have the experimental features activated for Docker and you can use [docker buildx](https://docs.docker.com/buildx/working-with-buildx/).
+
+Setup on my Ubuntu 20.04 workstation was as follows, based on the docs mentioned above:
+
+```bash
+# Install additional platforms for the default node on the current host linux os
+docker run --privileged --rm tonistiigi/binfmt --install all
+
+# create a separate endpoint that uses the default node
+docker buildx create --use mjml-server default
+
+# After that a local build should be possible with something like
+docker buildx build -f Dockerfile --platform linux/amd64,linux/arm64 -t [registry-and-tag] --push .
+
+# ... or if you want to use it locally with the mjml-server tag
+docker buildx build -f Dockerfile --platform linux/amd64,linux/arm64 -t mjml-server --load .
+```

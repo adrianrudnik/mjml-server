@@ -1,4 +1,4 @@
-FROM node:15-alpine
+FROM node:16-alpine
 
 ENV NODE_ENV=production
 
@@ -13,6 +13,8 @@ ENV HEALTHCHECK=true
 ENV CHARSET="utf8"
 ENV DEFAULT_RESPONSE_CONTENT_TYPE="text/html; charset=utf-8"
 
+WORKDIR /app
+
 COPY package* ./
 
 RUN set -ex \
@@ -22,9 +24,9 @@ RUN set -ex \
 
 COPY index.js ./index.js
 
-COPY healthcheck.sh /healthcheck.sh
+COPY healthcheck.sh /app/healthcheck.sh
 
-HEALTHCHECK --start-period=10s --retries=1 CMD /healthcheck.sh || exit 1
+HEALTHCHECK --start-period=10s --retries=1 CMD /app/healthcheck.sh || exit 1
 
 EXPOSE 80
 
