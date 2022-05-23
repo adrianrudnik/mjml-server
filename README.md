@@ -25,7 +25,7 @@ Due to GDPR / DSGVO reasons I required the mjml instance to be under my own cont
 Starting the image is as easy as running a test instance through docker
 
 ```sh
-docker run -it --rm -p 8080:80 mjml-server
+docker run -it --rm -p 8080:80 adrianrudnik/mjml-server
 ```
 
 or `docker-compose` with the following example:
