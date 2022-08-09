@@ -1,4 +1,4 @@
-POST http://localhost:8080/api/item
+POST http://localhost:8080/
 Content-Type: text/html
 
 <mjml>
@@ -13,3 +13,10 @@ Content-Type: text/html
         </mj-section>
     </mj-body>
 </mjml>
+
+### https://github.com/adrianrudnik/mjml-server/issues/22
+
+POST http://localhost:8080/
+Content-Type: text/html
+
+<mjml><mj-body><mj-text font-size="16px">Test</mj-text></mj-body></mjml>
