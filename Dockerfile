@@ -17,12 +17,6 @@ WORKDIR /app
 
 COPY package* ./
 
-RUN set -ex \
-    && apk --no-cache upgrade \
-    && apk --no-cache add curl ca-certificates \
-    && update-ca-certificates \
-    && npm install 
-
 COPY index.js ./index.js
 
 COPY healthcheck.sh /app/healthcheck.sh
