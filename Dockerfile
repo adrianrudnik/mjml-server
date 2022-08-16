@@ -17,6 +17,9 @@ WORKDIR /app
 
 COPY package* ./
 
+RUN set -ex \
+    && npm install
+
 COPY index.js ./index.js
 
 COPY healthcheck.sh /app/healthcheck.sh
