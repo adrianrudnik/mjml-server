@@ -1,6 +1,6 @@
 # MJML docker microservice / server
 
-Standalone mjml server, listening on port 80/tcp.
+Standalone mjml server, listening on port 8080/tcp.
 
 Due to various challenges this image sports the following features:
 
@@ -25,7 +25,7 @@ Due to GDPR / DSGVO reasons I required the mjml instance to be under my own cont
 Starting the image is as easy as running a test instance through docker
 
 ```sh
-docker run -it --rm -p 8080:80 adrianrudnik/mjml-server
+docker run -it --rm -p 8080:8080 mjml-server
 ```
 
 or `docker-compose` with the following example:
@@ -37,7 +37,7 @@ services:
   mjml:
     image: adrianrudnik/mjml-server
     ports:
-      - 8080:80
+      - 8080:8080
     # environment:
     # to change the port:
     #   - PORT=8080
@@ -96,13 +96,13 @@ spec:
     livenessProbe:
       exec:
         command:
-        - curl - -X POST - 'http://localhost:80/'
+        - curl - -X POST - 'http://localhost:8080/'
       initialDelaySeconds: 30
       periodSeconds: 30
     readinessProbe:
       exec:
         command:
-        - curl - -X POST - 'http://localhost:80/'
+        - curl - -X POST - 'http://localhost:8080/'
       initialDelaySeconds: 25
 ```
 
