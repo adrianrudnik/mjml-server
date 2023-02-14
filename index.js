@@ -48,13 +48,13 @@ app.all('*', function (req, res) {
 
     try {
         const result = mjml2html(req.body || '', opts)
-        if (charsetOpts.contentType != "") {
+        if (charsetOpts.contentType !== "") {
             res.writeHead(200, {'Content-Type': charsetOpts.contentType})
         } else {
             // fall back
             res.writeHead(200, {'Content-Type': 'text/html'})
         }
-        if (charsetOpts.write != "") {
+        if (charsetOpts.write !== "") {
             res.write(result.html, charsetOpts.write)
         } else {
             res.write(result.html)
