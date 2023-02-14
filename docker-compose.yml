@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  mjml:
+    build:
+      dockerfile: ./Dockerfile
+    ports:
+      - target: 8080
+        published: 8080
+    environment:
+      - CORS=*
+      - MJML_KEEP_COMMENTS=true
+      - MJML_VALIDATION_LEVEL=strict
+      - MJML_MINIFY=false
+      - MJML_BEAUTIFY=true

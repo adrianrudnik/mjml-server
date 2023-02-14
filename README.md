@@ -18,36 +18,18 @@ Due to various challenges this image sports the following features:
 
 ## Overview
 
-This image spools up a simple mjml server instance, listening to port 80/tcp per default.
+This image spools up a simple mjml server instance, listening to port 8080/tcp per default.
 
 Due to GDPR / DSGVO reasons I required the mjml instance to be under my own control, as the processing personal information is processed in mail content generation.
 
 Starting the image is as easy as running a test instance through docker
 
 ```sh
-docker run -it --rm -p 8080:8080 mjml-server
+docker-compose up
+cd test
+curl --data "@raw.mjml" http://localhost:8080
 ```
 
-or `docker-compose` with the following example:
-
-```yml
-version: '3.7'
-
-services:
-  mjml:
-    image: adrianrudnik/mjml-server
-    ports:
-      - 8080:8080
-    # environment:
-    # to change the port:
-    #   - PORT=8080
-    # for development, uncomment the following lines:
-    #   - CORS=*
-    #   - MJML_KEEP_COMMENTS=true
-    #   - MJML_VALIDATION_LEVEL=strict
-    #   - MJML_MINIFY=false
-    #   - MJML_BEAUTIFY=true
-```
 
 ## Defaults
 
