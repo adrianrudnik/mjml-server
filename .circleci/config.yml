@@ -1,0 +1,70 @@
+version: 2.1
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.0.3
+  gcp-gcr: circleci/gcp-gcr@0.15.0
+  slack: circleci/slack@4.12.0
+jobs:
+  build_and_push:
+    machine: true
+    resource_class: medium
+    environment:
+      IMAGE_NAME: mjml-server
+    steps:
+      - checkout
+      - gcp-gcr/gcr-auth
+      - run:
+          name: Build Image
+          command: |
+            APP_VERSION=$(echo ${CIRCLE_SHA1:0:7})
+            IMAGE_TAG=$APP_VERSION-$(date +%s)
+            docker build --pull \
+              -t gcr.io/$GOOGLE_PROJECT_ID/$IMAGE_NAME:$APP_VERSION \
+              -t gcr.io/$GOOGLE_PROJECT_ID/$IMAGE_NAME:$IMAGE_TAG .
+            docker push gcr.io/$GOOGLE_PROJECT_ID/$IMAGE_NAME:$IMAGE_TAG
+            docker push gcr.io/$GOOGLE_PROJECT_ID/$IMAGE_NAME:$APP_VERSION
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
+  tag_prod_image:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    environment:
+      IMAGE_NAME: mjml-server
+    steps:
+      - checkout
+      - gcp-gcr/gcr-auth
+      - run:
+          name: Tag production image
+          command: |
+            COMMIT_HASH=$(git show-ref --tags | grep -F "$CIRCLE_TAG" | cut -d ' ' -f 1)
+            COMMIT_SHORT_SHA=$(echo ${COMMIT_HASH:0:7})
+
+            gcloud container images add-tag gcr.io/$GOOGLE_PROJECT_ID/$IMAGE_NAME:$COMMIT_SHORT_SHA \
+              gcr.io/$GOOGLE_PROJECT_ID/$IMAGE_NAME:$CIRCLE_TAG --quiet
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
+workflows:
+  main:
+    jobs:
+      - build_and_push:
+          context:
+            - GCP-parade-devops
+            - slack-secrets
+          filters:
+            branches:
+              only: main
+            tags:
+              ignore: /.*/
+      - tag_prod_image:
+          context:
+            - GCP-parade-devops
+            - slack-secrets
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
