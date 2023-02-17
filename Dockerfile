@@ -23,8 +23,7 @@ RUN set -ex \
     && update-ca-certificates \
     && npm install
 
-COPY index.js ./index.js
-
+COPY *.js ./
 COPY healthcheck.sh /app/healthcheck.sh
 
 USER node

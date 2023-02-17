@@ -8,6 +8,8 @@ const express = require('express'),
     mjml2html = require('mjml'),
     program = require('commander')
 
+const healthchecks = require('./healthcheck')
+
 program.usage('[options]').parse(process.argv)
 
 const app = express()
@@ -31,7 +33,11 @@ const charsetOpts = {
     contentType: (process.env.DEFAULT_RESPONSE_CONTENT_TYPE)
 }
 
-app.all('*', function (req, res) {
+if (opts.healthchecks) {
+    healthchecks.create(app, opts)
+}
+
+app.post('/', function (req, res) {
     // enable cors
     if (process.env.CORS) {
         res.header('Access-Control-Allow-Origin', process.env.CORS)

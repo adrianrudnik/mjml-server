@@ -78,17 +78,15 @@ spec:
     livenessProbe:
       exec:
         command:
-        - curl - -X POST - 'http://localhost:8080/'
+        - curl - 'http://localhost:8080/health/liveness'
       initialDelaySeconds: 30
       periodSeconds: 30
     readinessProbe:
       exec:
         command:
-        - curl - -X POST - 'http://localhost:8080/'
+        - curl - 'http://localhost:8080/health/readiness'
       initialDelaySeconds: 25
 ```
-
-Be aware that this does only check the connectivity and that the port might vary. If you want a functional check as well, you could shift to an approach like the ones used for docker with the result of the [healthcheck.sh](healthcheck.sh). But I'm not a kubernetes user, so feel free to do a pull request if you have a slim approach.
 
 ### Docker
 
