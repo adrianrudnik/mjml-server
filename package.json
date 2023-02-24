@@ -6,7 +6,7 @@
     "mjml-server": "bin/mjml-server"
   },
   "dependencies": {
-    "body-parser": "^1.20.1",
+    "body-parser": "^1.20.2",
     "commander": "^10.0.0",
     "express": "^4.18.2",
     "mjml": "^4.13.0"
