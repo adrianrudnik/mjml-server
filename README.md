@@ -36,12 +36,13 @@ curl --data "@raw.mjml" http://localhost:8080
 The production defaults, without any override, default to:
 
 ```sh
-CORS ""
-MJML_KEEP_COMMENTS "false"
-MJML_VALIDATION_LEVEL "soft"
-MJML_MINIFY "true"
-MJML_BEAUTIFY "false"
-HEALTHCHECK "true"
+CORS=""
+MAX_REQUEST_BODY="2048kb"
+MJML_KEEP_COMMENTS="false"
+MJML_VALIDATION_LEVEL="soft"
+MJML_MINIFY="true"
+MJML_BEAUTIFY="false"
+HEALTHCHECK="true"
 CHARSET="utf8"
 DEFAULT_RESPONSE_CONTENT_TYPE="text/html; charset=utf-8"
 ```
@@ -51,12 +52,12 @@ DEFAULT_RESPONSE_CONTENT_TYPE="text/html; charset=utf-8"
 For development environments I would suggest to switch it to
 
 ```sh
-CORS "*"
-MJML_KEEP_COMMENTS "true"
-MJML_VALIDATION_LEVEL "strict"
-MJML_MINIFY "false"
-MJML_BEAUTIFY "true"
-HEALTHCHECK "false"
+CORS="*"
+MJML_KEEP_COMMENTS="true"
+MJML_VALIDATION_LEVEL="strict"
+MJML_MINIFY="false"
+MJML_BEAUTIFY="false"
+HEALTHCHECK="false"
 ```
 
 This will escalate any issues you have with invalid mjml code to the docker log (`stdout` or `docker-compose logs`).

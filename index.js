@@ -14,11 +14,12 @@ program.usage('[options]').parse(process.argv)
 
 const app = express()
 
-app.use(bodyParser.text({
-    inflate: true,
-    limit: '2048kb',
-    type: '*/*',
-}))
+const maxReqBody = (process.env.MAX_REQUEST_BODY || '2048kb')
+app
+    .use(
+        bodyParser.text({ limit: maxReqBody, type: 'text/*' }),
+        bodyParser.json({ limit: maxReqBody })
+    )
 
 const opts = {
     keepComments: (process.env.MJML_KEEP_COMMENTS === 'true'),
@@ -48,25 +49,15 @@ app.post('/', function (req, res) {
 
     // ensure content type is set
     if (!req.headers['content-type']) {
-        res.status(500).send('Content-Type must be set, use text/plain if unsure')
+        res.status(400).send('Content-Type must be set, use text/html or application/json if unsure')
         return
     }
 
     try {
-        const result = mjml2html(req.body || '', opts)
-        if (charsetOpts.contentType !== "") {
-            res.writeHead(200, {'Content-Type': charsetOpts.contentType})
-        } else {
-            // fall back
-            res.writeHead(200, {'Content-Type': 'text/html'})
-        }
-        if (charsetOpts.write !== "") {
-            res.write(result.html, charsetOpts.write)
-        } else {
-            res.write(result.html)
-        }
-
-        res.end()
+        const input = req.body.mjml || req.body || '';
+        const result = mjml2html(input, opts)
+        const isJson = req.headers['content-type'] === 'application/json'
+        return res.send(isJson ? { html: result.html } : result.html)
     } catch (ex) {
         // print error details
         console.log(req.body || '')
@@ -102,6 +93,7 @@ Object.keys(signals).forEach((signal) => {
 
 console.log('self: ' + os.hostname() + ':' + server.address().port)
 console.log('cors: ' + (process.env.CORS || 'n/a'))
+console.log('maxReqBody: ' + maxReqBody)
 console.log('healthchecks: ' + opts.healthchecks)
 console.log('mjml keep comments: ' + opts.keepComments)
 console.log('mjml validation level: ' + opts.validationLevel)
@@ -110,4 +102,4 @@ console.log('mjml beautify: ' + opts.beautify)
 console.log('node default content-type:' + charsetOpts.contentType)
 console.log('node write charset:' + charsetOpts.write)
 console.log('')
-console.log('POST mjml as text/plain raw body, result will be returned as text/html.')
+console.log('POST mjml as application/json body, result will be returned as application/json.')

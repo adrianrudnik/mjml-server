@@ -7,6 +7,8 @@ docker run --rm -d -p 8080:80 --name mjml-server-test adrianrudnik/mjml-server:l
 
 sleep 5
 
-curl --data "@raw.mjml" http://localhost:8080
+curl --data "@raw.mjml" -H "Content-Type: text/html" http://localhost:8080
+curl --data "@raw.mjml" -H "Content-Type: text/plain" http://localhost:8080
+curl --data "@raw.mjml.json" -H "Content-Type: application/json" http://localhost:8080
 
 docker stop mjml-server-test

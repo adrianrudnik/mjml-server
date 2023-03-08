@@ -12,4 +12,4 @@ services:
       - MJML_KEEP_COMMENTS=true
       - MJML_VALIDATION_LEVEL=strict
       - MJML_MINIFY=false
-      - MJML_BEAUTIFY=true
+      - MJML_BEAUTIFY=false
