@@ -2,6 +2,8 @@
 
 'use strict'
 
+require('newrelic');
+
 const express = require('express'),
     bodyParser = require('body-parser'),
     os = require('os'),
