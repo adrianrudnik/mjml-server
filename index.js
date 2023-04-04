@@ -23,7 +23,6 @@ app
 
 const opts = {
     keepComments: (process.env.MJML_KEEP_COMMENTS === 'true'),
-    minify: (process.env.MJML_MINIFY === 'true'),
     beautify: (process.env.MJML_BEAUTIFY === 'true'),
     validationLevel: (['soft', 'strict', 'skip'].includes(process.env.MJML_VALIDATION_LEVEL) ? process.env.MJML_VALIDATION_LEVEL : 'soft'),
     healthchecks: (process.env.HEALTHCHECK === 'true')
@@ -97,7 +96,6 @@ console.log('maxReqBody: ' + maxReqBody)
 console.log('healthchecks: ' + opts.healthchecks)
 console.log('mjml keep comments: ' + opts.keepComments)
 console.log('mjml validation level: ' + opts.validationLevel)
-console.log('mjml minify: ' + opts.minify)
 console.log('mjml beautify: ' + opts.beautify)
 console.log('node default content-type:' + charsetOpts.contentType)
 console.log('node write charset:' + charsetOpts.write)
