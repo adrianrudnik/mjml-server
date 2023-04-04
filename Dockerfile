@@ -21,7 +21,7 @@ RUN set -ex \
     && apk --no-cache upgrade \
     && apk --no-cache add curl ca-certificates \
     && update-ca-certificates \
-    && npm install
+    && npm install --ignore-scripts
 
 COPY *.js ./
 COPY healthcheck.sh /app/healthcheck.sh
