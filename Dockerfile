@@ -24,12 +24,8 @@ RUN set -ex \
     && npm install --ignore-scripts
 
 COPY *.js ./
-COPY healthcheck.sh /app/healthcheck.sh
 
 USER node
-HEALTHCHECK --start-period=10s --retries=1 CMD /app/healthcheck.sh || exit 1
-
 EXPOSE 8080
 
-# ENTRYPOINT [ "node", "--inspect=0.0.0.0:9229", "index.js" ]
 ENTRYPOINT [ "node", "index.js" ]
