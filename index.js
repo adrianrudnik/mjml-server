@@ -2,7 +2,7 @@
 
 'use strict'
 
-require('newrelic');
+const newrelic = require('newrelic');
 
 const express = require('express'),
     bodyParser = require('body-parser'),
@@ -56,7 +56,7 @@ app.post('/', function (req, res) {
 
     try {
         const input = req.body.mjml || req.body || '';
-        const result = mjml2html(input, opts)
+        const result = newrelic.startSegment('emails/mjml/render', true, () => mjml2html(input, opts))
         const isJson = req.headers['content-type'] === 'application/json'
         return res.send(isJson ? { html: result.html } : result.html)
     } catch (ex) {
