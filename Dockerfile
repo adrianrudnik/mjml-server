@@ -23,9 +23,9 @@ RUN set -ex \
     && update-ca-certificates \
     && npm ci --ignore-scripts
 
-COPY *.js ./
+COPY /lib ./lib
 
 USER node
 EXPOSE 8080
 
-ENTRYPOINT [ "node", "index.js" ]
+ENTRYPOINT [ "node", "lib/index.js" ]
