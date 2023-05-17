@@ -3,7 +3,8 @@
   "private": true,
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:ci": "jest --coverage"
   },
   "dependencies": {
     "body-parser": "^1.20.2",

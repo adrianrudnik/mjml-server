@@ -13,9 +13,9 @@ ENV HEALTHCHECK=true
 ENV CHARSET="utf8"
 ENV DEFAULT_RESPONSE_CONTENT_TYPE="text/html; charset=utf-8"
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY package* ./
+COPY package* /usr/src/app/
 
 RUN set -ex \
     && apk --no-cache upgrade \
@@ -23,9 +23,9 @@ RUN set -ex \
     && update-ca-certificates \
     && npm ci --ignore-scripts
 
-COPY /lib ./lib
+COPY /lib /usr/src/app/lib
 
 USER node
 EXPOSE 8080
 
-ENTRYPOINT [ "node", "lib/index.js" ]
+ENTRYPOINT [ "node", "./lib/index.js" ]

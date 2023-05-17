@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  mjml:
+    build:
+      context: ..
+      args:
+        - CI=true
+    volumes:
+      - "../coverage/:/usr/src/app/reports/"
+    environment:
+      - CI=true
+      - MJML_KEEP_COMMENTS=false
+      - MJML_VALIDATION_LEVEL=strict
+      - MJML_BEAUTIFY=false
