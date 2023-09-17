@@ -10,11 +10,12 @@ Due to various challenges this image sports the following features:
 - Supports healthchecks.
 
 # Table of contents
-  - [Overview](#overview)
-  - [Defaults](#defaults)
-  - [Development](#development)
-  - [Troubleshooting](#troubleshooting)
-    - [Kubernetes](#kubernetes)
+
+- [Overview](#overview)
+- [Defaults](#defaults)
+- [Development](#development)
+- [Troubleshooting](#troubleshooting)
+  - [Kubernetes](#kubernetes)
 
 ## Overview
 
@@ -31,8 +32,6 @@ docker run -it --rm -p 8080:80 adrianrudnik/mjml-server
 or `docker-compose` with the following example:
 
 ```yml
-version: '3.7'
-
 services:
   mjml:
     image: adrianrudnik/mjml-server
